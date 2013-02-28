@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>445</width>
-    <height>230</height>
+    <height>268</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>190</y>
+     <y>227</y>
      <width>391</width>
      <height>32</height>
     </rect>
@@ -65,7 +65,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Text</string>
+    <string>Ukol</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="lineEdit">
@@ -88,7 +88,7 @@
     </rect>
    </property>
    <property name="title">
-    <string>Barvy textu</string>
+    <string>Kdo</string>
    </property>
    <widget class="QRadioButton" name="radioButton">
     <property name="geometry">
@@ -100,7 +100,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>klasika</string>
+     <string>1.Odd</string>
     </property>
     <property name="checked">
      <bool>true</bool>
@@ -116,7 +116,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>bílá na červené</string>
+     <string>2.Odd</string>
     </property>
    </widget>
    <widget class="QRadioButton" name="radioButton_3">
@@ -129,7 +129,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>žlutá na zelené</string>
+     <string>3.Odd</string>
     </property>
    </widget>
    <widget class="QRadioButton" name="radioButton_4">
@@ -142,7 +142,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>bílá na modré</string>
+     <string>Ostatni</string>
     </property>
    </widget>
   </widget>
@@ -174,6 +174,29 @@
      </size>
     </property>
    </widget>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>184</y>
+     <width>56</width>
+     <height>14</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Pro</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_2">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>200</y>
+     <width>401</width>
+     <height>20</height>
+    </rect>
+   </property>
   </widget>
  </widget>
  <resources/>

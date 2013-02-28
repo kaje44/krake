@@ -3,7 +3,7 @@
 **                                                                  **
 **  Vytvořen: Po 31.pro.2012 08:55:13                               **
 **                                                                  **
-**  Posledni upravy: Ne 03.úno.2013 10:10:16                        **
+**  Posledni upravy: Čt 28.úno.2013 08:23:35                        **
 **********************************************************************/
 
 #ifndef DAYMODEL_H
@@ -23,6 +23,7 @@ class DayModel : public QStandardItemModel {
 	Q_OBJECT
 private:	
 	QDate m_date;
+	QString strBau(QString p_str, int p_len) const;
 public:
 	DayModel( QObject * parent = 0 );
 	void addDayData(DayData* p_data, bool p_storedb);
@@ -40,7 +41,6 @@ public:
 signals:
 	void resort();
 };
-
 
 /**************************************************************************************************** 
  * *                                        SortProxyModel                                          * 

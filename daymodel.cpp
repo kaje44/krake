@@ -3,7 +3,7 @@
 **                                                                  **
 **  Vytvořen: Po 31.pro.2012 08:56:03                               **
 **                                                                  **
-**  Posledni upravy: St 13.úno.2013 09:08:35                        **
+**  Posledni upravy: Čt 28.úno.2013 08:37:21                        **
 **********************************************************************/
 
 #include <QtGui>
@@ -33,40 +33,53 @@ QVariant DayModel::data ( const QModelIndex & index, int role ) const {
 	DayData *dd  =	(DayData *) item(row);
 
 	//Pozadi
-    if ((role == Qt::BackgroundRole) && (dd->getFarbe() > 0)) {						
-		if (dd->getFarbe() == 1) 
+    if (role == Qt::BackgroundRole) {						
+		if (dd->getOdd() == 0) 
+			return QColor(Qt::cyan);	
+		if (dd->getOdd() == 1) 
+			return QColor(Qt::white);	
+		if (dd->getOdd() == 2) 
 			return QColor(Qt::darkRed);	
-		if (dd->getFarbe() == 2) 
-			return QColor(Qt::darkGreen);	
-		if (dd->getFarbe() == 3) 
+		if (dd->getOdd() == 3) 
 			return QColor(Qt::darkBlue);	
 	};
 		
 	//Popredi
-    if ((role == Qt::ForegroundRole) && (dd->getFarbe() > 0)) {			
-		if (dd->getFarbe() == 1) 
+    if (role == Qt::ForegroundRole) {			
+		if (dd->getOdd() == 0) 
+			return QColor(Qt::black);	
+		if (dd->getOdd() == 1) 
+			return QColor(Qt::black);	
+		if (dd->getOdd() == 2) 
 			return QColor(Qt::white);	
-		if (dd->getFarbe() == 2) 
-			return QColor(Qt::yellow);	
-		if (dd->getFarbe() == 3) 
+		if (dd->getOdd() == 3) 
 			return QColor(Qt::white);	
     };
 
 	//Text
 	if (role == Qt::DisplayRole) {			
-		return QString("%1 %2").arg(dd->getZeit().toString("HH:mm")).arg(dd->getNachricht());	
+			
+		return QString("%1 %2 %3").arg(dd->getZeit().toString("HH:mm")).arg(strBau(dd->getNachricht(),8)).arg(strBau(dd->getZiel(),4));	
 	};//if
 
 	QVariant var = QStandardItemModel::data(index ,role);
     return var;
+}
 
+//------------------------------------------------------------------------------------------------- 
+ 
+QString DayModel::strBau(QString p_str, int p_len) const {
+	QString str = QString("%1").arg(p_str,(-1) * p_len,'_');
+	str = str.left(p_len);
+	qDebug() << "debug - " << str; 
+	return str;
 }
 
 //------------------------------------------------------------------------------------------------- 
  
 bool DayModel::dropMimeData(const QMimeData *data,Qt::DropAction action, int row, int column, const QModelIndex &parent) {
 
-	QString text;       
+	QString text, ziel;       
 	QDate   date;    
 	QTime   zeit;
 	QString icon;
@@ -91,12 +104,12 @@ bool DayModel::dropMimeData(const QMimeData *data,Qt::DropAction action, int row
 		if (data->hasFormat(MIME_TYPE)) {
 	 		QByteArray encodedData = data->data(MIME_TYPE);
      		QDataStream stream(&encodedData, QIODevice::ReadOnly);
-			stream >> id >> text >> date >> zeit >> farbe >> icon;
+			stream >> id >> text >> ziel >> date >> zeit >> farbe >> icon;
 			if ( date == m_date ) {
 				return false;	
 			}
 			DayData *dd = new DayData;
-			dd->setDayData ( text ,m_date ,zeit, farbe , icon ,id);
+			dd->setDayData ( text ,ziel, m_date ,zeit, farbe , icon ,id);
 			addDayData(dd,true);
 			emit resort();
 			return true;
@@ -137,11 +150,12 @@ QMimeData *DayModel::mimeData(const QModelIndexList &indexes) const {
 			DayData* si   = (DayData*) itemFromIndex(mi);
 			int id		  = si->getId();
 			QString text  = si->getNachricht(); 
+			QString ziel  = si->getZiel(); 
 			QDate   date  = si->getDate();
 			QTime   zeit  = si->getZeit();
-			int farbe	  = si->getFarbe();
+			int 	odd	  = si->getOdd();
 			QString icon  = si->getSicon(); 
-			stream << id << text << date << zeit << farbe << icon ;
+			stream << id << text << ziel << date << zeit << odd << icon ;
 		}	
 	}
 	mimeData->setData(MIME_TYPE, encodedData);			
@@ -203,6 +217,14 @@ bool SortProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right)
     DayData *ldt = (DayData *) ((DayModel *) sourceModel())->itemFromIndex(left); 
 	DayData *rdt = (DayData *) ((DayModel *) sourceModel())->itemFromIndex(right);
 
-    return ldt->getZeit() < rdt->getZeit();
+	int lo = ldt->getOdd();
+	int ro = rdt->getOdd();
+/*
+	if ( lo == ro ) {
+	    return ldt->getZeit() < rdt->getZeit();
+	} else {
+*/			
+		return lo < ro;	
+//	};//if
 }
 

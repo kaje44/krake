@@ -3,7 +3,7 @@
 **                                                                  **
 **  Vytvořen: st 02.01.2013 13:26:04                                **
 **                                                                  **
-**  Posledni upravy: Ne 03.úno.2013 10:12:42                        **
+**  Posledni upravy: Čt 28.úno.2013 08:32:21                        **
 *********************************************************************/
 
 #include <QtGui>
@@ -92,9 +92,10 @@ void DayItem::clear() {
 
 void DayItem::setActiveColor() {
     QPalette palette;
-	QColor colBase(0xD6,0xD6,0x96);
-	QColor colTitle(0xE0,0xE0,0xA0);
-	
+
+	QColor colBase(0x96,0x96,0xD6);
+	QColor colTitle(0xA0,0xA0,0xE0);
+
 	palette.setColor(QPalette::Background,colTitle);
 	palette.setColor(QPalette::Foreground,Qt::black);
 	palette.setColor(QPalette::Base,colBase);
@@ -106,8 +107,10 @@ void DayItem::setActiveColor() {
 
 void DayItem::setOtherColor() {
 	QPalette palette;
-	QColor colBase(0xB6,0xB6,0x76);
-	QColor colTitle(0xC0,0xC0,0x90);
+	
+	QColor colBase(0x76,0x76,0xB6);
+	QColor colTitle(0x90,0x90,0xC0);
+
 	palette.setColor(QPalette::Background,colTitle);
 	palette.setColor(QPalette::Foreground,Qt::black);
 	palette.setColor(QPalette::Base,colBase);
@@ -119,8 +122,10 @@ void DayItem::setOtherColor() {
  
 void DayItem::setNowColor() {
 	QPalette palette;
-	QColor colBase(0xD6,0xD6,0x96);
-	QColor colTitle(0xA0,0xA0,0xE0);
+	
+	QColor colBase(0x96,0x96,0xD6);
+	QColor colTitle(0xE0,0xE0,0xA0);
+
 	palette.setColor(QPalette::Background,colTitle);
 	palette.setColor(QPalette::Foreground,Qt::black);
 	palette.setColor(QPalette::Base,colBase);

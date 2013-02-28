@@ -3,7 +3,7 @@
 **                                                                  **
 **  Vytvořen: pá 04.01.2013 08:12:07                                **
 **                                                                  **
-**  Posledni upravy: Út 05.úno.2013 08:57:29                        **
+**  Posledni upravy: St 27.úno.2013 10:11:08                        **
 *********************************************************************/
 
 
@@ -36,8 +36,8 @@ public:
 //	void sendData(int &p_count, DayData* p_dd);
 	void sendData(DayData* p_dd);
 
-	void setFarbe(const int p_farbe);
-	int getFarbe() const;
+	void setOdd(const int p_odd);
+	int getOdd() const;
 
 signals:
 	void sendInputData(DayData p_data);	

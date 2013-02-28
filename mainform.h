@@ -1,10 +1,10 @@
 /*********************************************************************
-**  KaJe 2012                                                       **
+**  KaJe 2013                                                       **
 **                                                                  **
-**  Vytvořen: po 31.12.2012 08:28:05                                **
+**  Vytvořen: St 27.úno.2013 08:17:07                               **
 **                                                                  **
-**  Posledni upravy: St 06.úno.2013 14:45:30                        **
-*********************************************************************/
+**  Posledni upravy: St 27.úno.2013 08:17:16                        **
+**********************************************************************/
 
 #ifndef MAINFORM_H
 #define MAINFORM_H
@@ -20,6 +20,7 @@ class MainForm : public KjMainWindow, private Ui_MainWindow {
 public:
 	MainForm();
 	~MainForm();
+	void setColor();
 	
 };
 	

@@ -1,10 +1,10 @@
 /*********************************************************************
-**  KaJe 2012                                                       **
+**  KaJe 2013                                                       **
 **                                                                  **
-**  Vytvořen: pá 21.12.2012 14:55:14                                **
+**  Vytvořen: St 27.úno.2013 08:17:58                               **
 **                                                                  **
-**  Posledni upravy: Út 05.úno.2013 08:27:11                        **
-*********************************************************************/
+**  Posledni upravy: St 27.úno.2013 10:25:56                        **
+**********************************************************************/
 
 #include <QDate>
 #include <QtSql>
@@ -24,8 +24,7 @@ SqlEngine::SqlEngine(QString pDatabase, QString pModulName, QString pType)
 //------------------------------------------------------------------------------------------------- 
  
 void SqlEngine::deleteDay( const DayData* p_data ) const {
-	insertDelDay( p_data );
-	runCmd(QString("DELETE FROM kalendar WHERE id = '%1';").arg(p_data->getId()));
+	runCmd(QString("DELETE FROM infowork WHERE id = '%1';").arg(p_data->getId()));
 };
 
 //------------------------------------------------------------------------------------------------- 
@@ -34,45 +33,18 @@ void SqlEngine::insertDay( DayData* p_data ) const {
 	try {	
 		KjSqlQuery sql;
 		sql.clear();
-		sql.prepare("INSERT INTO kalendar ( date, zeit, nachricht, farbe, sicon ) VALUES ( :date, :zeit, :nachricht, :farbe, :sicon );");
+		sql.prepare("INSERT INTO infowork ( date, zeit, nachricht, ziel, odd, sicon ) VALUES ( :date, :zeit, :nachricht, :ziel, :odd, :sicon );");
 		sql.bindValue(":date"     , p_data->getDate().toString("yyyy-MM-dd"));
 		sql.bindValue(":zeit"     , p_data->getZeit().toString("HH:mm:ss"));
 		sql.bindValue(":nachricht", p_data->getNachricht());
-		sql.bindValue(":farbe" 	  , p_data->getFarbe());
+		sql.bindValue(":ziel 	 ", p_data->getZiel());
+		sql.bindValue(":odd" 	  , p_data->getOdd());
 		sql.bindValue(":sicon" 	  , p_data->getSicon());
 		sql.run();
 	   	p_data->setId(sql.lastInsertId().toInt());
 	} catch (KjSqlException ex) {
 		saveError("insertDay",QString(ex.what()));
 	};//try
-	deleteDelDay(p_data);
-};
-
-//------------------------------------------------------------------------------------------------- 
-
-void SqlEngine::insertDelDay( const DayData* p_data ) const {
-	try {	
-		KjSqlQuery sql;
-		sql.clear();
-		sql.prepare("INSERT INTO dekalendar ( date, zeit, nachricht, farbe, sicon ) VALUES ( :date, :zeit, :nachricht, :farbe, :sicon );");
-		sql.bindValue(":date"     , p_data->getDate().toString("yyyy-MM-dd"));
-		sql.bindValue(":zeit"     , p_data->getZeit().toString("HH:mm:ss"));
-		sql.bindValue(":nachricht", p_data->getNachricht());
-		sql.bindValue(":farbe" 	  , p_data->getFarbe());
-		sql.bindValue(":sicon" 	  , p_data->getSicon());
-		sql.run();		
-	} catch (KjSqlException ex) {
-		saveError("insertDelDay",QString(ex.what()));
-	};//try
-};
-
-//------------------------------------------------------------------------------------------------- 
- 
-void SqlEngine::deleteDelDay( const DayData* p_data ) const {
-	runCmd(QString("DELETE FROM dekalendar WHERE ( (date = '%1') AND (zeit = '%2') AND ( nachricht = '%3'));")
-				  .arg( p_data->getDate().toString("yyyy-MM-dd"))
-				  .arg(	p_data->getZeit().toString("HH:mm:ss"))
-				  .arg( p_data->getNachricht() ));
 };
 
 //------------------------------------------------------------------------------------------------- 
@@ -81,11 +53,12 @@ void SqlEngine::updateDay( const DayData* p_data ) const {
 	try {	
 		KjSqlQuery sql;
 		sql.clear();
-		sql.prepare(QString("UPDATE kalendar SET date = :date, zeit = :zeit, nachricht = :nachricht, farbe = :farbe, sicon = :sicon WHERE ( id = '%1' )").arg(p_data->getId()));
+		sql.prepare(QString("UPDATE infowork SET date = :date, zeit = :zeit, nachricht = :nachricht,ziel = :ziel, odd = :odd, sicon = :sicon WHERE ( id = '%1' )").arg(p_data->getId()));
 		sql.bindValue(":date"     , p_data->getDate().toString("yyyy-MM-dd"));
 		sql.bindValue(":zeit"     , p_data->getZeit().toString("HH:mm:ss"));
 		sql.bindValue(":nachricht", p_data->getNachricht());
-		sql.bindValue(":farbe" 	  , p_data->getFarbe());
+		sql.bindValue(":ziel"	  , p_data->getZiel());
+		sql.bindValue(":odd" 	  , p_data->getOdd());
 		sql.bindValue(":sicon" 	  , p_data->getSicon());
 		sql.run();
 	} catch (KjSqlException ex) {
@@ -100,7 +73,7 @@ void SqlEngine::initMonat( const int p_first, const int p_monat, const int p_jah
 	QDate bisD(p_jahr, p_monat, vonD.daysInMonth()); 
 	try {	
 		KjSqlQuery sql;
-		sql << QString("SELECT * FROM kalendar WHERE date BETWEEN '%1' AND '%2' ORDER BY date,zeit;")
+		sql << QString("SELECT * FROM infowork WHERE date BETWEEN '%1' AND '%2' ORDER BY date,zeit;")
 						.arg(vonD.toString("yyyy-MM-dd"))
 						.arg(bisD.toString("yyyy-MM-dd;"));
 		while (sql.next()) {
@@ -110,10 +83,11 @@ void SqlEngine::initMonat( const int p_first, const int p_monat, const int p_jah
 			QDate   date      = sql.value(1).toDate();
 			QTime   zeit      = sql.value(2).toTime();
 			QString nachricht = sql.value(3).toString();
-			int farbe         = sql.value(4).toInt();
-			QString sicon     = sql.value(5).toString();
+			QString ziel	  = sql.value(4).toString();
+			int odd           = sql.value(5).toInt();
+			QString sicon     = sql.value(6).toString();
 			
-			dd->setDayData(nachricht,date,zeit,farbe,sicon,id);
+			dd->setDayData(nachricht,ziel,date,zeit,odd,sicon,id);
 			emit addItem(p_first-1+date.day(),dd);
 		};//while
 
@@ -130,7 +104,7 @@ void SqlEngine::initMonat( const int p_first, const int p_dif, const QDate p_dat
 	
 	try {
 		KjSqlQuery sql;
-		sql << QString("SELECT * FROM kalendar WHERE date BETWEEN '%1' AND '%2' ORDER BY date,zeit;")
+		sql << QString("SELECT * FROM infowork WHERE date BETWEEN '%1' AND '%2' ORDER BY date,zeit;")
 						.arg(vonD.toString("yyyy-MM-dd"))
 						.arg(bisD.toString("yyyy-MM-dd;"));
 
@@ -140,10 +114,11 @@ void SqlEngine::initMonat( const int p_first, const int p_dif, const QDate p_dat
 			QDate   date      = sql.value(1).toDate();
 			QTime   zeit      = sql.value(2).toTime();
 			QString nachricht = sql.value(3).toString();
-			int farbe         = sql.value(4).toInt();
-			QString sicon     = sql.value(5).toString();
+			QString ziel	  = sql.value(4).toString();
+			int odd           = sql.value(5).toInt();
+			QString sicon     = sql.value(6).toString();
 		
-			dd->setDayData(nachricht,date,zeit,farbe,sicon,id);
+			dd->setDayData(nachricht,ziel,date,zeit,odd,sicon,id);
 
 			emit addItem(p_first+p_dif+date.day(),dd);
 		};//while
@@ -211,14 +186,16 @@ void SqlEngine::copyInto(KjSqlQuery &p_sql1, QString p_table1, KjSqlQuery &p_sql
 		QDate   date      = p_sql1.value(1).toDate();
 		QTime   zeit      = p_sql1.value(2).toTime();
 		QString nachricht = p_sql1.value(3).toString();
-		int farbe         = p_sql1.value(4).toInt();
-		QString sicon     = p_sql1.value(5).toString();
+		QString ziel	  = p_sql1.value(4).toString();
+		int odd	          = p_sql1.value(5).toInt();
+		QString sicon     = p_sql1.value(6).toString();
 
-		p_sql2.prepare(QString("INSERT INTO %1 ( date, zeit, nachricht, farbe, sicon ) VALUES ( :date, :zeit, :nachricht, :farbe, :sicon );").arg(p_table2));
+		p_sql2.prepare(QString("INSERT INTO %1 ( date, zeit, nachricht, ziel, odd, sicon ) VALUES ( :date, :zeit, :nachricht, :ziel, :odd, :sicon );").arg(p_table2));
 		p_sql2.bindValue(":date"     , date.toString("yyyy-MM-dd"));
 		p_sql2.bindValue(":zeit"     , zeit.toString("HH:mm:ss"));
 		p_sql2.bindValue(":nachricht", nachricht);
-		p_sql2.bindValue(":farbe" 	 , farbe);
+		p_sql2.bindValue(":ziel"	 , ziel);
+		p_sql2.bindValue(":odd" 	 , odd);
 		p_sql2.bindValue(":sicon" 	 , sicon);
 		p_sql2.run();		
 	};//while

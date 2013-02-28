@@ -1,19 +1,20 @@
 ######################################################################
-#  KaJe 2012                                                         #
-#                                                                    #
-#  Vytvořen: po 31.12.2012 08:28:05                                  #
-#                                                                    #
-#  Posledni upravy: St 06.úno.2013 15:01:06                        **
+##  KaJe 2013                                                       ##
+##                                                                  ##
+##  Vytvořen: St 27.úno.2013 08:10:59                               ##
+##                                                                  ##
+##  Posledni upravy: St 27.úno.2013 10:33:05                        ##
 ######################################################################
+
 TEMPLATE	= app
 DESTDIR	= dist
-TARGET	= kalendar
+TARGET	= tasks
 CONFIG	+= qt debug
 INCLUDEPATH	+= ./bibliothek
 DEPENDPATH	+= ./bibliothek
 
 win32 { 
-	RC_FILE = lochness.rc
+	RC_FILE = krake.rc
 	LIBS += "C:\Qt\sqlite\sqlite3.lib"
 } else {
 	LIBS += -lsqlite3
@@ -22,7 +23,7 @@ win32 {
 DEFINES += DBF=ODBC
 
 # Input
-RESOURCES += lochness.qrc
+RESOURCES += krake.qrc
 
 HEADERS +=  mainform.h \
 			daydata.h \

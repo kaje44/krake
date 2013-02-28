@@ -3,7 +3,7 @@
 **                                                                  **
 **  Vytvořen: pá 21.12.2012 14:55:14                                **
 **                                                                  **
-**  Posledni upravy: Út 05.úno.2013 08:26:10                        **
+**  Posledni upravy: St 27.úno.2013 10:23:33                        **
 *********************************************************************/
 #ifndef SQLENGINE_H
 #define SQLENGINE_H
@@ -30,10 +30,6 @@ public:
 	void deleteDay( const DayData* p_data ) const;
 	//a DayData přiřadí id
 	void insertDay( DayData* p_data ) const;	
-	//smaže smazané a znovu uložené
-	void deleteDelDay( const DayData* p_data ) const;
-	//ulozi data do seznamu mazani
-	void insertDelDay( const DayData* p_data ) const;	
 	void updateDay( const DayData* p_data ) const;
 	
 	void initMonat( const int p_first, const int p_monat, const int p_jahr);
