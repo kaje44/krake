@@ -3,7 +3,7 @@
 **                                                                  **
 **  Vytvořen: St 27.úno.2013 08:16:49                               **
 **                                                                  **
-**  Posledni upravy: St 27.úno.2013 10:51:48                        **
+**  Posledni upravy: Čt 07.bře.2013 09:54:16                        **
 **********************************************************************/
 
 #include <QtGui>
@@ -20,10 +20,10 @@ SqlEngine *sqle;
 MainForm::MainForm() : KjMainWindow() {
 	setupUi(this);
 	if ( schliesser() ) {
-		createInfo("$build .1$", ":img/kalendar.jpg");
+		createInfo("$build v1.0.2$", ":img/kalendar.jpg");
 		m_rootDir = QCoreApplication::applicationDirPath()+"/";
 		syslog.open(m_rootDir + "infowork.log");		
-//		sqle = new SqlEngine("WorkODBC","servercon","QODBC");
+//		sqle = new SqlEngine("InfODBC","servercon","QODBC");
 // pri sqlite udelat zmeny i v .pro
 		sqle = new SqlEngine("infowork.db","servercon","QSQLITE");
 		if (sqle->isOpen()) {

@@ -32,6 +32,7 @@
 		<file>img/quickopen.png</file>
 		<file>img/rating.png</file>
 		<file>img/view-refresh.png</file>
-		<file>img/kalendar.jpg</file>
+		<file>img/svn-commit.png</file>
+		<file>img/story-editor.png</file>
 	</qresource>
 </RCC>

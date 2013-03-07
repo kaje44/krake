@@ -3,7 +3,7 @@
 **                                                                  **
 **  Vytvořen: St 27.úno.2013 08:17:29                               **
 **                                                                  **
-**  Posledni upravy: St 27.úno.2013 08:17:35                        **
+**  Posledni upravy: Čt 07.bře.2013 09:47:25                        **
 **********************************************************************/
 
 #ifndef MONATFORM_H
@@ -22,7 +22,7 @@ class MonatForm : public QWidget, private Ui_MonatForm {
 	Q_OBJECT
 private:
 	int m_year ,m_month;
-	QAction	*actGoPrev, *actGoNext, *actRefresh;
+	QAction	*actGoPrev, *actGoNext, *actRefresh, *actExport;
 	QDate m_today;
 	DayItem *m_dia[42];
 	bool m_change;
@@ -33,6 +33,7 @@ private:
 private slots:
 	void meActGoPrev();
 	void meActGoNext();
+	void meActExport();
 	void meActRefresh();
 	void addItem(int p_idx, DayData* p_data);
 

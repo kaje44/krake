@@ -3,7 +3,7 @@
 **                                                                  **
 **  Vytvořen: Po 31.pro.2012 08:56:03                               **
 **                                                                  **
-**  Posledni upravy: Čt 28.úno.2013 08:37:21                        **
+**  Posledni upravy: Čt 07.bře.2013 10:12:33                        **
 **********************************************************************/
 
 #include <QtGui>
@@ -37,11 +37,11 @@ QVariant DayModel::data ( const QModelIndex & index, int role ) const {
 		if (dd->getOdd() == 0) 
 			return QColor(Qt::cyan);	
 		if (dd->getOdd() == 1) 
-			return QColor(Qt::white);	
+			return QColor(0xF0, 0xF0, 0xF0);	
 		if (dd->getOdd() == 2) 
-			return QColor(Qt::darkRed);	
+			return QColor(0xF0, 0x0A, 0x0A);	
 		if (dd->getOdd() == 3) 
-			return QColor(Qt::darkBlue);	
+			return QColor(0x0A, 0x0A, 0xF0);	
 	};
 		
 	//Popredi
@@ -58,8 +58,7 @@ QVariant DayModel::data ( const QModelIndex & index, int role ) const {
 
 	//Text
 	if (role == Qt::DisplayRole) {			
-			
-		return QString("%1 %2 %3").arg(dd->getZeit().toString("HH:mm")).arg(strBau(dd->getNachricht(),8)).arg(strBau(dd->getZiel(),4));	
+		return QString("%1 %2 - %3").arg(dd->getZeit().toString("HH")).arg(strBau(dd->getAufgabe(),8)).arg(strBau(dd->getZiel(),4));	
 	};//if
 
 	QVariant var = QStandardItemModel::data(index ,role);
@@ -69,9 +68,8 @@ QVariant DayModel::data ( const QModelIndex & index, int role ) const {
 //------------------------------------------------------------------------------------------------- 
  
 QString DayModel::strBau(QString p_str, int p_len) const {
-	QString str = QString("%1").arg(p_str,(-1) * p_len,'_');
+	QString str = QString("%1").arg(p_str,(-1) * p_len,' ');
 	str = str.left(p_len);
-	qDebug() << "debug - " << str; 
 	return str;
 }
 
@@ -79,7 +77,7 @@ QString DayModel::strBau(QString p_str, int p_len) const {
  
 bool DayModel::dropMimeData(const QMimeData *data,Qt::DropAction action, int row, int column, const QModelIndex &parent) {
 
-	QString text, ziel;       
+	QString aufgabe, ziel, nachricht;       
 	QDate   date;    
 	QTime   zeit;
 	QString icon;
@@ -104,12 +102,12 @@ bool DayModel::dropMimeData(const QMimeData *data,Qt::DropAction action, int row
 		if (data->hasFormat(MIME_TYPE)) {
 	 		QByteArray encodedData = data->data(MIME_TYPE);
      		QDataStream stream(&encodedData, QIODevice::ReadOnly);
-			stream >> id >> text >> ziel >> date >> zeit >> farbe >> icon;
+			stream >> id >> aufgabe >> ziel >> date >> zeit >> farbe >> icon >> nachricht;
 			if ( date == m_date ) {
 				return false;	
 			}
 			DayData *dd = new DayData;
-			dd->setDayData ( text ,ziel, m_date ,zeit, farbe , icon ,id);
+			dd->setDayData ( aufgabe ,ziel, m_date ,zeit, farbe , icon ,nachricht ,id);
 			addDayData(dd,true);
 			emit resort();
 			return true;
@@ -147,15 +145,16 @@ QMimeData *DayModel::mimeData(const QModelIndexList &indexes) const {
 
 	foreach (QModelIndex mi, indexes) {
 		if (mi.isValid()) {
-			DayData* si   = (DayData*) itemFromIndex(mi);
-			int id		  = si->getId();
-			QString text  = si->getNachricht(); 
-			QString ziel  = si->getZiel(); 
-			QDate   date  = si->getDate();
-			QTime   zeit  = si->getZeit();
-			int 	odd	  = si->getOdd();
-			QString icon  = si->getSicon(); 
-			stream << id << text << ziel << date << zeit << odd << icon ;
+			DayData* si   	  = (DayData*) itemFromIndex(mi);
+			int id		  	  = si->getId();
+			QString aufgabe   = si->getAufgabe();
+			QString ziel  	  = si->getZiel(); 
+			QDate   date  	  = si->getDate();
+			QTime   zeit  	  = si->getZeit();
+			int 	odd	  	  = si->getOdd();
+			QString icon  	  = si->getSicon(); 
+			QString nachricht = si->getNachricht();
+			stream << id << aufgabe << ziel << date << zeit << odd << icon << nachricht;
 		}	
 	}
 	mimeData->setData(MIME_TYPE, encodedData);			
@@ -217,14 +216,24 @@ bool SortProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right)
     DayData *ldt = (DayData *) ((DayModel *) sourceModel())->itemFromIndex(left); 
 	DayData *rdt = (DayData *) ((DayModel *) sourceModel())->itemFromIndex(right);
 
-	int lo = ldt->getOdd();
-	int ro = rdt->getOdd();
-/*
-	if ( lo == ro ) {
-	    return ldt->getZeit() < rdt->getZeit();
+	QTime ltm = ldt->getZeit();
+	QTime rtm = rdt->getZeit();
+	
+	if ( ltm < rtm ) {
+		return true;	
 	} else {
-*/			
-		return lo < ro;	
-//	};//if
+		if (ltm == rtm) {	
+			int lo = ldt->getOdd();
+			int ro = rdt->getOdd();
+			if ( lo < ro ) {
+				return true;				
+			} else {
+				return false;	
+			};
+		} else {
+			return false;	
+		};//if
+	};
+	return false;
 }
 

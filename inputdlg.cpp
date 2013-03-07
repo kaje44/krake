@@ -3,12 +3,10 @@
 **                                                                  **
 **  Vytvořen: pá 04.01.2013 08:12:07                                **
 **                                                                  **
-**  Posledni upravy: St 27.úno.2013 10:16:47                        **
+**  Posledni upravy: St 06.bře.2013 17:43:55                        **
 *********************************************************************/
 
 
-
-#include <QDebug>
 
 #include "commonmodel.h"
 
@@ -35,8 +33,10 @@ void InputDlg::setData( const DayData* p_data, bool p_insert) {
 	m_id   = p_data->getId();	
 	m_date = p_data->getDate();  
 	timeEdit->setTime(p_data->getZeit());
-	
-	lineEdit->setText(p_data->getNachricht());
+
+	lineEdit->setText(p_data->getAufgabe());
+	lineEdit_2->setText(p_data->getZiel());
+	textEdit->setPlainText(p_data->getNachricht());
 	comboBox->setCurrentIndex(m_pictureM->getIndex(p_data->getSicon()));
 	setOdd(p_data->getOdd());
 }
@@ -46,7 +46,7 @@ void InputDlg::setData( const DayData* p_data, bool p_insert) {
 void InputDlg::sendData(DayData* p_dd) {
 	QTime zeit = timeEdit->time();
 	p_dd->setDayData ( lineEdit->text(), lineEdit_2->text(), m_date, zeit, getOdd(),
-					   m_pictureM->item(comboBox->currentIndex())->data().toString(),m_id);
+					   m_pictureM->item(comboBox->currentIndex())->data().toString(),textEdit->toPlainText(),m_id);
 }
 
 //------------------------------------------------------------------------------------------------- 

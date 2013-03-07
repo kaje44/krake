@@ -3,7 +3,7 @@
 **                                                                  **
 **  Vytvořen: st 02.01.2013 13:26:04                                **
 **                                                                  **
-**  Posledni upravy: Čt 28.úno.2013 08:32:21                        **
+**  Posledni upravy: St 06.bře.2013 17:24:52                        **
 *********************************************************************/
 
 #include <QtGui>
@@ -19,7 +19,6 @@ DayItem::DayItem(QWidget * parent): QFrame(parent) {
 	setMaximumSize(QSize(150, 150));
     setFrameShape(QFrame::StyledPanel);
     setFrameShadow(QFrame::Raised);
-
     
 	QVBoxLayout *verticalLayout = new QVBoxLayout(this);
     verticalLayout->setContentsMargins(2, 2, 2, 2);
@@ -93,8 +92,8 @@ void DayItem::clear() {
 void DayItem::setActiveColor() {
     QPalette palette;
 
-	QColor colBase(0x96,0x96,0xD6);
-	QColor colTitle(0xA0,0xA0,0xE0);
+	QColor colBase(0xB6,0xB6,0xF6);
+	QColor colTitle(0xC0,0xC0,0xFF);
 
 	palette.setColor(QPalette::Background,colTitle);
 	palette.setColor(QPalette::Foreground,Qt::black);
@@ -108,8 +107,8 @@ void DayItem::setActiveColor() {
 void DayItem::setOtherColor() {
 	QPalette palette;
 	
-	QColor colBase(0x76,0x76,0xB6);
-	QColor colTitle(0x90,0x90,0xC0);
+	QColor colBase(0x96,0x96,0xD6);
+	QColor colTitle(0xB0,0xB0,0xF0);
 
 	palette.setColor(QPalette::Background,colTitle);
 	palette.setColor(QPalette::Foreground,Qt::black);

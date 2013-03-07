@@ -3,7 +3,7 @@
 **                                                                  **
 **  Vytvořen: po 31.12.2012 08:37:53                                **
 **                                                                  **
-**  Posledni upravy: Út 05.úno.2013 08:37:05                        **
+**  Posledni upravy: Čt 07.bře.2013 09:52:18                        **
 *********************************************************************/
 
 #include <QtGui>
@@ -52,6 +52,7 @@ MonatForm::MonatForm(QWidget * parent, Qt::WindowFlags f):QWidget(parent,f) {
 	toolButton->setDefaultAction(actGoPrev);
 	toolButton_2->setDefaultAction(actGoNext);
 	toolButton_3->setDefaultAction(actRefresh);
+	toolButton_4->setDefaultAction(actExport);
 
 	QGridLayout *gridLayout = new QGridLayout(frame_2);
 	gridLayout->setSpacing(2);
@@ -143,6 +144,10 @@ void MonatForm::createActions() {
 	actRefresh  = new QAction(QIcon(":img/view-refresh.png"), "&Obnovit", this);
 	actRefresh->setStatusTip("Obnovit");
 	connect(actRefresh, SIGNAL(triggered()), this, SLOT(meActRefresh()));
+
+	actExport = new QAction(QIcon(":img/svn-commit.png"), "&Export", this);
+	actExport->setStatusTip("Export");
+	connect(actExport, SIGNAL(triggered()), this, SLOT(meActExport()));
 }
 
 //------------------------------------------------------------------------------------------------- 
@@ -191,6 +196,14 @@ void MonatForm::addItem(int p_idx, DayData* p_data) {
 void MonatForm::meActRefresh() {
 	setCursor(Qt::BusyCursor);
 	updateTable();
+	setCursor(Qt::ArrowCursor);	
+}
+
+//------------------------------------------------------------------------------------------------- 
+
+void MonatForm::meActExport() {
+	setCursor(Qt::BusyCursor);
+	info("Info", "na této funkci se ještě usilovně pracuje");
 	setCursor(Qt::ArrowCursor);	
 }
 
