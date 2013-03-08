@@ -3,7 +3,7 @@
 **                                                                  **
 **  Vytvořen: St 27.úno.2013 09:12:29                               **
 **                                                                  **
-**  Posledni upravy: Čt 07.bře.2013 09:45:08                        **
+**  Posledni upravy: Pá 08.bře.2013 09:01:38                        **
 **********************************************************************/
 
 #include <QDate>
@@ -17,7 +17,6 @@
 #define DAY_NACHR   Qt::UserRole +  5
 #define DAY_ZIEL    Qt::UserRole +  6
 #define DAY_ODD	    Qt::UserRole +  7
-#define DAY_SICON   Qt::UserRole +  8
 
 /***************************************************************************************************
  *                                     DayData                                                     *
@@ -29,13 +28,13 @@ DayData::DayData(): QStandardItem() {
 //------------------------------------------------------------------------------------------------- 
  
 DayData::DayData(QDate p_date):QStandardItem() {
-	setDayData ( "", "",p_date, QTime(8,0),0, "---", "");
+	setDayData ( "", "",p_date, QTime(8,0),0, "");
 }
 
 //------------------------------------------------------------------------------------------------- 
  
 void DayData::setDayData ( const QString p_aufgabe, const QString p_ziel, const QDate p_date, const QTime p_time, 
-						   const int p_odd, const QString p_sicon, const QString p_nachricht, const int p_id ) {
+						   const int p_odd, const QString p_nachricht, const int p_id ) {
  	setText(p_aufgabe);
 	setData(p_id 	,DAY_ID    );
 	setData(p_aufgabe	,DAY_AUFGABE );
@@ -44,7 +43,6 @@ void DayData::setDayData ( const QString p_aufgabe, const QString p_ziel, const 
 	setData(p_date 	,DAY_DATE  );                 
 	setData(p_time 	,DAY_TIME  ); 
 	setData(p_odd   ,DAY_ODD   );                 
-	setData(p_sicon ,DAY_SICON ); 
 
 	QString txt = QString("Úkol: %1\nCíl : %2\n%3").arg(p_aufgabe).arg(p_ziel).arg(p_nachricht);
 
@@ -60,7 +58,6 @@ void DayData::setDayData ( const DayData* p_data ) {
 				 p_data->getDate(),
 				 p_data->getZeit(),
 				 p_data->getOdd(),
-				 p_data->getSicon(),
 				 p_data->getNachricht(),
 				 p_data->getId());
 }
@@ -98,12 +95,6 @@ int DayData::getOdd() const {
 
 //------------------------------------------------------------------------------------------------- 
  
-QString DayData::getSicon() const {
-	return this->data(DAY_SICON).toString();
-}
-
-//------------------------------------------------------------------------------------------------- 
-
 QString DayData::getAufgabe() const {
 	return this->data(DAY_AUFGABE).toString();
 }

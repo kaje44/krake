@@ -3,7 +3,7 @@
 **                                                                  **
 **  Vytvořen: st 02.01.2013 13:26:04                                **
 **                                                                  **
-**  Posledni upravy: St 06.bře.2013 17:24:52                        **
+**  Posledni upravy: Pá 08.bře.2013 12:39:18                        **
 *********************************************************************/
 
 #include <QtGui>
@@ -40,6 +40,7 @@ DayItem::DayItem(QWidget * parent): QFrame(parent) {
 	m_proxyModel->setDynamicSortFilter(true);
 	m_proxyModel->setSourceModel(m_model);		
 	m_msgList->setModel(m_proxyModel); 
+	resort();
 
 	actAddItem  = new QAction(QIcon(":img/list-add.png"), "&Přidat", this);
 	connect(actAddItem, SIGNAL(triggered()), this, SLOT(meActAddItem()));
@@ -143,7 +144,7 @@ void DayItem::meActAddItem() {
 		dlg.sendData(dd);	
 		receiveInputData(dd);
 		m_msgList->clearSelection();
-		m_proxyModel->sort(0);
+		resort();
 	};//if
 }
 
@@ -166,7 +167,9 @@ void DayItem::meActDelItem() {
 
 void DayItem::meActUpdItem() {
 	if ( m_msgList->selectionModel()->hasSelection() ) {
-		int idx = m_msgList->selectionModel()->currentIndex().row();
+		QItemSelection zs = m_msgList->selectionModel()->selection();
+		QItemSelection ss = m_proxyModel->mapSelectionToSource(zs);
+		int idx = ss.indexes().at(0).row();
 		DayData* dd =  m_model->getDay(idx);
 		InputDlg dlg(this);
 		dlg.setData(dd,false);
@@ -175,7 +178,7 @@ void DayItem::meActUpdItem() {
 			dlg.sendData(dd);	
 			m_model->updateDayData(idx,dd);
 			m_msgList->clearSelection();
-			m_proxyModel->sort(0);
+			resort();
 		};//if
 	};
 }

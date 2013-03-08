@@ -3,7 +3,7 @@
 **                                                                  **
 **  Vytvořen: st 02.01.2013 13:26:04                                **
 **                                                                  **
-**  Posledni upravy: Ne 03.úno.2013 10:11:40                        **
+**  Posledni upravy: Pá 08.bře.2013 10:28:00                        **
 *********************************************************************/
 #ifndef DAYITEM_H
 #define DAYITEM_H

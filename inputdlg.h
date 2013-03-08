@@ -3,7 +3,7 @@
 **                                                                  **
 **  Vytvořen: pá 04.01.2013 08:12:07                                **
 **                                                                  **
-**  Posledni upravy: St 27.úno.2013 10:11:08                        **
+**  Posledni upravy: Pá 08.bře.2013 08:58:19                        **
 *********************************************************************/
 
 
@@ -26,7 +26,6 @@ private:
 	QDate m_date;
 	int m_id;
 	ColorModel *m_colorM;
-	PictureModel *m_pictureM;
 
 public:
 	InputDlg(QWidget * parent = 0, Qt::WindowFlags f = 0);

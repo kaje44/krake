@@ -3,7 +3,7 @@
 ##                                                                  ##
 ##  Vytvořen: St 27.úno.2013 08:10:59                               ##
 ##                                                                  ##
-##  Posledni upravy: St 27.úno.2013 10:33:05                        ##
+##  Posledni upravy: Pá 08.bře.2013 08:57:45                        ##
 ######################################################################
 
 TEMPLATE	= app
@@ -27,7 +27,6 @@ RESOURCES += krake.qrc
 
 HEADERS +=  mainform.h \
 			daydata.h \
-			commonmodel.h \
 			inputdlg.h \
 			dayitem.h \
 			monatform.h \
@@ -42,7 +41,6 @@ HEADERS +=  mainform.h \
 
 SOURCES +=  mainform.cpp \
 			daydata.cpp \
-			commonmodel.cpp \
 			inputdlg.cpp \
 			dayitem.cpp \
 			monatform.cpp \

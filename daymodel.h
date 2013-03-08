@@ -3,7 +3,7 @@
 **                                                                  **
 **  Vytvořen: Po 31.pro.2012 08:55:13                               **
 **                                                                  **
-**  Posledni upravy: Čt 28.úno.2013 08:23:35                        **
+**  Posledni upravy: Pá 08.bře.2013 09:20:04                        **
 **********************************************************************/
 
 #ifndef DAYMODEL_H
@@ -14,8 +14,6 @@
 #include <QSortFilterProxyModel>
 #include <QDate>
 
-#include "commonmodel.h"
-
 class DayData;
 
 
@@ -24,6 +22,8 @@ class DayModel : public QStandardItemModel {
 private:	
 	QDate m_date;
 	QString strBau(QString p_str, int p_len) const;
+	QString getIcon(int p_odd) const;
+
 public:
 	DayModel( QObject * parent = 0 );
 	void addDayData(DayData* p_data, bool p_storedb);

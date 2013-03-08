@@ -3,7 +3,7 @@
 **                                                                  **
 **  Vytvořen: Po 31.pro.2012 08:56:03                               **
 **                                                                  **
-**  Posledni upravy: Čt 07.bře.2013 10:12:33                        **
+**  Posledni upravy: Pá 08.bře.2013 09:48:11                        **
 **********************************************************************/
 
 #include <QtGui>
@@ -80,7 +80,6 @@ bool DayModel::dropMimeData(const QMimeData *data,Qt::DropAction action, int row
 	QString aufgabe, ziel, nachricht;       
 	QDate   date;    
 	QTime   zeit;
-	QString icon;
 	int farbe ,id;
 		
     if (action == Qt::IgnoreAction)
@@ -102,12 +101,12 @@ bool DayModel::dropMimeData(const QMimeData *data,Qt::DropAction action, int row
 		if (data->hasFormat(MIME_TYPE)) {
 	 		QByteArray encodedData = data->data(MIME_TYPE);
      		QDataStream stream(&encodedData, QIODevice::ReadOnly);
-			stream >> id >> aufgabe >> ziel >> date >> zeit >> farbe >> icon >> nachricht;
+			stream >> id >> aufgabe >> ziel >> date >> zeit >> farbe >> nachricht;
 			if ( date == m_date ) {
 				return false;	
 			}
 			DayData *dd = new DayData;
-			dd->setDayData ( aufgabe ,ziel, m_date ,zeit, farbe , icon ,nachricht ,id);
+			dd->setDayData ( aufgabe ,ziel, m_date ,zeit, farbe , nachricht ,id);
 			addDayData(dd,true);
 			emit resort();
 			return true;
@@ -152,9 +151,8 @@ QMimeData *DayModel::mimeData(const QModelIndexList &indexes) const {
 			QDate   date  	  = si->getDate();
 			QTime   zeit  	  = si->getZeit();
 			int 	odd	  	  = si->getOdd();
-			QString icon  	  = si->getSicon(); 
 			QString nachricht = si->getNachricht();
-			stream << id << aufgabe << ziel << date << zeit << odd << icon << nachricht;
+			stream << id << aufgabe << ziel << date << zeit << odd << nachricht;
 		}	
 	}
 	mimeData->setData(MIME_TYPE, encodedData);			
@@ -169,10 +167,22 @@ DayData* DayModel::getDay(const int p_index) const {
 
 //------------------------------------------------------------------------------------------------- 
  
+QString DayModel::getIcon(int p_odd) const {
+	QString sicon;	
+	switch ( p_odd ) {
+		case 1 : sicon = ":img/jedna.png"; break;
+		case 2 : sicon = ":img/dva.png";break;
+		case 3 : sicon = ":img/tri.png";break;
+		default: sicon = ":img/nula.png";break;
+	};//swicth
+	return sicon;
+}
+
+//------------------------------------------------------------------------------------------------- 
+ 
 void DayModel::addDayData(DayData *p_data, bool p_storedb) {
-	QString sicon = p_data->getSicon();
-	if (sicon != "")
-		p_data->setIcon(QIcon(sicon));
+	QString sicon = getIcon(p_data->getOdd());
+	p_data->setIcon(QIcon(sicon));
 	if (p_storedb)
 		sqle->insertDay(p_data);
 	appendRow(p_data);	
@@ -182,9 +192,8 @@ void DayModel::addDayData(DayData *p_data, bool p_storedb) {
 
 void DayModel::updateDayData(int p_index,DayData* p_data) {
 	DayData* dd = (DayData*) item(p_index);
-	QString sicon = p_data->getSicon();
-	if (sicon != "")
-		dd->setIcon(QIcon(sicon));
+	QString sicon = getIcon(p_data->getOdd());
+	dd->setIcon(QIcon(sicon));
 	dd->setDayData(p_data);
 	sqle->updateDay(p_data);
 }

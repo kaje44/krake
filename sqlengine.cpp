@@ -3,7 +3,7 @@
 **                                                                  **
 **  Vytvořen: St 27.úno.2013 08:17:58                               **
 **                                                                  **
-**  Posledni upravy: Čt 07.bře.2013 10:06:49                        **
+**  Posledni upravy: Pá 08.bře.2013 09:24:33                        **
 **********************************************************************/
 
 #include <QDate>
@@ -33,13 +33,12 @@ void SqlEngine::insertDay( DayData* p_data ) const {
 	try {	
 		KjSqlQuery sql;
 		sql.clear();
-		sql.prepare("INSERT INTO infowork ( date, zeit, aufgabe, ziel, odd, sicon, nachricht ) VALUES ( :date, :zeit, :aufgabe, :ziel, :odd, :sicon , :nachricht );");
+		sql.prepare("INSERT INTO infowork ( date, zeit, aufgabe, ziel, odd, nachricht ) VALUES ( :date, :zeit, :aufgabe, :ziel, :odd, :nachricht );");
 		sql.bindValue(":date"     , p_data->getDate().toString("yyyy-MM-dd"));
 		sql.bindValue(":zeit"     , p_data->getZeit().toString("HH:mm:ss"));
 		sql.bindValue(":aufgabe"  , p_data->getAufgabe());
 		sql.bindValue(":ziel 	 ", p_data->getZiel());
 		sql.bindValue(":odd" 	  , p_data->getOdd());
-		sql.bindValue(":sicon" 	  , p_data->getSicon());
 		sql.bindValue(":nachricht", p_data->getNachricht());
 		sql.run();
 	   	p_data->setId(sql.lastInsertId().toInt());
@@ -54,13 +53,12 @@ void SqlEngine::updateDay( const DayData* p_data ) const {
 	try {	
 		KjSqlQuery sql;
 		sql.clear();
-		sql.prepare(QString("UPDATE infowork SET date = :date, zeit = :zeit, aufgabe = :aufgabe, ziel = :ziel, odd = :odd, sicon = :sicon, nachricht = :nachricht WHERE ( id = '%1' )").arg(p_data->getId()));
+		sql.prepare(QString("UPDATE infowork SET date = :date, zeit = :zeit, aufgabe = :aufgabe, ziel = :ziel, odd = :odd, nachricht = :nachricht WHERE ( id = '%1' )").arg(p_data->getId()));
 		sql.bindValue(":date"     , p_data->getDate().toString("yyyy-MM-dd"));
 		sql.bindValue(":zeit"     , p_data->getZeit().toString("HH:mm:ss"));
 		sql.bindValue(":aufgabe"  , p_data->getAufgabe());
 		sql.bindValue(":ziel"	  , p_data->getZiel());
 		sql.bindValue(":odd" 	  , p_data->getOdd());
-		sql.bindValue(":sicon" 	  , p_data->getSicon());
 		sql.bindValue(":nachricht", p_data->getNachricht());
 		sql.run();
 	} catch (KjSqlException ex) {
@@ -87,10 +85,9 @@ void SqlEngine::initMonat( const int p_first, const int p_monat, const int p_jah
 			QString aufgabe   = sql.value(3).toString();
 			QString ziel	  = sql.value(4).toString();
 			int odd           = sql.value(5).toInt();
-			QString sicon     = sql.value(6).toString();
 			QString nachricht = sql.value(7).toString();
 			
-			dd->setDayData(aufgabe,ziel,date,zeit,odd,sicon,nachricht,id);
+			dd->setDayData(aufgabe,ziel,date,zeit,odd,nachricht,id);
 			emit addItem(p_first-1+date.day(),dd);
 		};//while
 
@@ -122,7 +119,7 @@ void SqlEngine::initMonat( const int p_first, const int p_dif, const QDate p_dat
 			QString sicon     = sql.value(6).toString();
 			QString nachricht = sql.value(7).toString();
 		
-			dd->setDayData(aufgabe,ziel,date,zeit,odd,sicon,nachricht,id);
+			dd->setDayData(aufgabe,ziel,date,zeit,odd,nachricht,id);
 
 			emit addItem(p_first+p_dif+date.day(),dd);
 		};//while
@@ -145,13 +142,12 @@ void SqlEngine::copyInto(KjSqlQuery &p_sql1, QString p_table1, KjSqlQuery &p_sql
 		QString sicon     = p_sql1.value(6).toString();
 		QString nachricht = p_sql1.value(7).toString();
 
-		p_sql2.prepare(QString("INSERT INTO %1 ( date, zeit, aufgabe ziel, odd, sicon, nachricht ) VALUES ( :date, :zeit, :aufgabe, :ziel, :odd, :sicon, :nachricht);").arg(p_table2));
+		p_sql2.prepare(QString("INSERT INTO %1 ( date, zeit, aufgabe ziel, odd, nachricht ) VALUES ( :date, :zeit, :aufgabe, :ziel, :odd, :nachricht);").arg(p_table2));
 		p_sql2.bindValue(":date"     , date.toString("yyyy-MM-dd"));
 		p_sql2.bindValue(":zeit"     , zeit.toString("HH:mm:ss"));
 		p_sql2.bindValue(":aufgabe"  , aufgabe);	
 		p_sql2.bindValue(":ziel"	 , ziel);
 		p_sql2.bindValue(":odd" 	 , odd);
-		p_sql2.bindValue(":sicon" 	 , sicon);
 		p_sql2.bindValue(":nachricht", nachricht);
 		p_sql2.run();		
 	};//while

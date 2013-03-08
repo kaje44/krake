@@ -3,12 +3,10 @@
 **                                                                  **
 **  Vytvořen: pá 04.01.2013 08:12:07                                **
 **                                                                  **
-**  Posledni upravy: St 06.bře.2013 17:43:55                        **
+**  Posledni upravy: Pá 08.bře.2013 08:58:45                        **
 *********************************************************************/
 
 
-
-#include "commonmodel.h"
 
 #include "daydata.h"
 
@@ -18,8 +16,6 @@
 InputDlg::InputDlg(QWidget * parent, Qt::WindowFlags f) : QDialog(parent,f) {
 	setupUi(this);	
 	m_id = -1;
-	m_pictureM = new PictureModel;
-	comboBox->setModel(m_pictureM);
 	radioButton->setChecked(true);
 	timeEdit->setTime(QTime(8,0));
 }
@@ -37,7 +33,6 @@ void InputDlg::setData( const DayData* p_data, bool p_insert) {
 	lineEdit->setText(p_data->getAufgabe());
 	lineEdit_2->setText(p_data->getZiel());
 	textEdit->setPlainText(p_data->getNachricht());
-	comboBox->setCurrentIndex(m_pictureM->getIndex(p_data->getSicon()));
 	setOdd(p_data->getOdd());
 }
 
@@ -46,7 +41,7 @@ void InputDlg::setData( const DayData* p_data, bool p_insert) {
 void InputDlg::sendData(DayData* p_dd) {
 	QTime zeit = timeEdit->time();
 	p_dd->setDayData ( lineEdit->text(), lineEdit_2->text(), m_date, zeit, getOdd(),
-					   m_pictureM->item(comboBox->currentIndex())->data().toString(),textEdit->toPlainText(),m_id);
+					   textEdit->toPlainText(),m_id);
 }
 
 //------------------------------------------------------------------------------------------------- 
