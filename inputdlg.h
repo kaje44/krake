@@ -3,7 +3,7 @@
 **                                                                  **
 **  Vytvořen: pá 04.01.2013 08:12:07                                **
 **                                                                  **
-**  Posledni upravy: Pá 08.bře.2013 08:58:19                        **
+**  Posledni upravy: St 13.bře.2013 12:45:48                        **
 *********************************************************************/
 
 
@@ -14,6 +14,8 @@
 #include "obj/ui_inputdlg.h"
 
 #include <QWidget>
+#include <QDate>
+
 
 #include "daydata.h"
 
@@ -26,17 +28,20 @@ private:
 	QDate m_date;
 	int m_id;
 	ColorModel *m_colorM;
+	QStringList m_zadaList;
 
 public:
 	InputDlg(QWidget * parent = 0, Qt::WindowFlags f = 0);
 	//Nastaví data
 	void setData( const DayData* p_data, bool p_insert = true );
 	//Zašle data
-//	void sendData(int &p_count, DayData* p_dd);
 	void sendData(DayData* p_dd);
 
 	void setOdd(const int p_odd);
 	int getOdd() const;
+
+	int getZiel() const;
+	void setZiel(const int p_ziel);
 
 signals:
 	void sendInputData(DayData p_data);	

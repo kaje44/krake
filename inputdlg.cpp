@@ -3,12 +3,12 @@
 **                                                                  **
 **  Vytvořen: pá 04.01.2013 08:12:07                                **
 **                                                                  **
-**  Posledni upravy: Pá 08.bře.2013 08:58:45                        **
+**  Posledni upravy: Čt 14.bře.2013 08:00:57                        **
 *********************************************************************/
 
-
-
 #include "daydata.h"
+
+#include "sqlengine.h"
 
 #include "inputdlg.h"
 
@@ -16,8 +16,17 @@
 InputDlg::InputDlg(QWidget * parent, Qt::WindowFlags f) : QDialog(parent,f) {
 	setupUi(this);	
 	m_id = -1;
+	m_zadaList = sqle->getZadaList();
+
 	radioButton->setChecked(true);
-	timeEdit->setTime(QTime(8,0));
+	comboBox->addItems(m_zadaList);
+
+	checkBox->setChecked(false);
+	checkBox_2->setChecked(false);
+	checkBox_3->setChecked(false);
+	checkBox_4->setChecked(false);
+
+	
 }
 
 //------------------------------------------------------------------------------------------------- 
@@ -28,10 +37,10 @@ void InputDlg::setData( const DayData* p_data, bool p_insert) {
 
 	m_id   = p_data->getId();	
 	m_date = p_data->getDate();  
-	timeEdit->setTime(p_data->getZeit());
+	comboBox->setCurrentIndex(m_zadaList.indexOf(p_data->getZada()));
 
 	lineEdit->setText(p_data->getAufgabe());
-	lineEdit_2->setText(p_data->getZiel());
+	setZiel(p_data->getZiel());
 	textEdit->setPlainText(p_data->getNachricht());
 	setOdd(p_data->getOdd());
 }
@@ -39,8 +48,7 @@ void InputDlg::setData( const DayData* p_data, bool p_insert) {
 //------------------------------------------------------------------------------------------------- 
 
 void InputDlg::sendData(DayData* p_dd) {
-	QTime zeit = timeEdit->time();
-	p_dd->setDayData ( lineEdit->text(), lineEdit_2->text(), m_date, zeit, getOdd(),
+	p_dd->setDayData ( lineEdit->text(), getZiel(), m_date, comboBox->currentText(), getOdd(),
 					   textEdit->toPlainText(),m_id);
 }
 
@@ -74,6 +82,31 @@ void InputDlg::setOdd(const int p_odd) {
 		case 3 : radioButton_3->setChecked(true);break;
 		default: radioButton_4->setChecked(true);break;		
 	};//switch
+}
+
+//------------------------------------------------------------------------------------------------- 
+
+
+int InputDlg::getZiel() const {
+	int ret = 0;
+	if (checkBox  ->checkState() == Qt::Checked) 
+		ret |= ZR;	
+	if (checkBox_2->checkState() == Qt::Checked)
+		ret |= ZO;
+	if (checkBox_3->checkState() == Qt::Checked)
+		ret |= ZN;
+	if (checkBox_4->checkState() == Qt::Checked)
+		ret |= ZE;
+	return ret;	
+}
+
+//------------------------------------------------------------------------------------------------- 
+ 
+void InputDlg::setZiel(const int p_ziel) {
+	checkBox  ->setCheckState( ((p_ziel & ZR) == ZR) ? Qt::Checked : Qt::Unchecked );
+	checkBox_2->setCheckState( ((p_ziel & ZO) == ZO) ? Qt::Checked : Qt::Unchecked );
+	checkBox_3->setCheckState( ((p_ziel & ZN) == ZN) ? Qt::Checked : Qt::Unchecked );
+	checkBox_4->setCheckState( ((p_ziel & ZE) == ZE) ? Qt::Checked : Qt::Unchecked );
 }
 
 //------------------------------------------------------------------------------------------------- 

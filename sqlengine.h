@@ -3,7 +3,7 @@
 **                                                                  **
 **  Vytvořen: pá 21.12.2012 14:55:14                                **
 **                                                                  **
-**  Posledni upravy: St 27.úno.2013 10:23:33                        **
+**  Posledni upravy: St 13.bře.2013 09:34:46                        **
 *********************************************************************/
 #ifndef SQLENGINE_H
 #define SQLENGINE_H
@@ -34,6 +34,8 @@ public:
 	
 	void initMonat( const int p_first, const int p_monat, const int p_jahr);
 	void initMonat( const int p_first, const int p_dif, const QDate p_date, const int p_count);
+
+	QStringList getZadaList();
 
 	void update();
 signals:

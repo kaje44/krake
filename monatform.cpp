@@ -3,12 +3,13 @@
 **                                                                  **
 **  Vytvořen: po 31.12.2012 08:37:53                                **
 **                                                                  **
-**  Posledni upravy: Pá 08.bře.2013 10:30:12                        **
+**  Posledni upravy: Čt 14.bře.2013 08:20:46                        **
 *********************************************************************/
 
 #include <QtGui>
 
 #include "sqlengine.h"
+#include "printdlg.h"
 #include "dayitem.h"
 #include "monatform.h"
 #include "kjguilib.h" 
@@ -202,8 +203,11 @@ void MonatForm::meActRefresh() {
 //------------------------------------------------------------------------------------------------- 
 
 void MonatForm::meActExport() {
-	setCursor(Qt::BusyCursor);
-	info("Info", "na této funkci se ještě usilovně pracuje");
-	setCursor(Qt::ArrowCursor);	
+	PrintDlg dlg;	
+	if (dlg.exec()) {	
+		setCursor(Qt::BusyCursor);
+		info("Info", "na této funkci se ještě usilovně pracuje");
+		setCursor(Qt::ArrowCursor);	
+	}	
 }
 

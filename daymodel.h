@@ -3,7 +3,7 @@
 **                                                                  **
 **  Vytvořen: Po 31.pro.2012 08:55:13                               **
 **                                                                  **
-**  Posledni upravy: Pá 08.bře.2013 09:20:04                        **
+**  Posledni upravy: St 13.bře.2013 12:42:21                        **
 **********************************************************************/
 
 #ifndef DAYMODEL_H
@@ -21,7 +21,7 @@ class DayModel : public QStandardItemModel {
 	Q_OBJECT
 private:	
 	QDate m_date;
-	QString strBau(QString p_str, int p_len) const;
+	QString zielStr(const int p_ziel) const;
 	QString getIcon(int p_odd) const;
 
 public:

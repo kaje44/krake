@@ -20,7 +20,7 @@ SqlEngine *sqle;
 MainForm::MainForm() : KjMainWindow() {
 	setupUi(this);
 	if ( schliesser() ) {
-		createInfo("$build v1.0.3$", ":img/story-editor.png");
+		createInfo("$build v1.0.4$", ":img/story-editor.png");
 		m_rootDir = QCoreApplication::applicationDirPath()+"/";
 		syslog.open(m_rootDir + "infowork.log");		
 //		sqle = new SqlEngine("InfODBC","servercon","QODBC");
