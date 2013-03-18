@@ -3,7 +3,7 @@
 **                                                                  **
 **  Vytvořen: st 02.01.2013 13:26:04                                **
 **                                                                  **
-**  Posledni upravy: Pá 08.bře.2013 12:41:13                        **
+**  Posledni upravy: Po 18.bře.2013 08:59:50                        **
 *********************************************************************/
 
 #include <QtGui>
@@ -123,11 +123,11 @@ void DayItem::setOtherColor() {
 void DayItem::setNowColor() {
 	QPalette palette;
 	
-	QColor colBase(0x96,0x96,0xD6);
-	QColor colTitle(0xE0,0xE0,0xA0);
+	QColor colBase(0x96,0x96,0xF6);
+	QColor colTitle(0xB,0xB,0xF0);
 
 	palette.setColor(QPalette::Background,colTitle);
-	palette.setColor(QPalette::Foreground,Qt::black);
+	palette.setColor(QPalette::Foreground,Qt::cyan);
 	palette.setColor(QPalette::Base,colBase);
 	setPalette(palette);                      	
 	setAutoFillBackground( true );

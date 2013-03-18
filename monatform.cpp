@@ -3,7 +3,7 @@
 **                                                                  **
 **  Vytvořen: po 31.12.2012 08:37:53                                **
 **                                                                  **
-**  Posledni upravy: Čt 14.bře.2013 08:20:46                        **
+**  Posledni upravy: Po 18.bře.2013 08:33:02                        **
 *********************************************************************/
 
 #include <QtGui>
@@ -204,10 +204,14 @@ void MonatForm::meActRefresh() {
 
 void MonatForm::meActExport() {
 	PrintDlg dlg;	
-	if (dlg.exec()) {	
-		setCursor(Qt::BusyCursor);
-		info("Info", "na této funkci se ještě usilovně pracuje");
-		setCursor(Qt::ArrowCursor);	
-	}	
+	if (dlg.exec()) {			
+		QString fileName = QFileDialog::getSaveFileName(this, "Uložit do souboru",
+   					                    QDir::homePath()+"/ukoly.odt","Úkoly (*.odt)");
+		if (!fileName.isEmpty()) {
+			setCursor(Qt::BusyCursor);
+			info("Info", "na této funkci se ještě usilovně pracuje");
+			setCursor(Qt::ArrowCursor);	
+		};//if
+	};//if	
 }
 

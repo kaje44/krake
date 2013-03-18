@@ -3,7 +3,7 @@
 **                                                                  **
 **  Vytvořen: Po 31.pro.2012 08:56:03                               **
 **                                                                  **
-**  Posledni upravy: Čt 14.bře.2013 08:36:00                        **
+**  Posledni upravy: Po 18.bře.2013 08:11:32                        **
 **********************************************************************/
 
 #include <QtGui>
@@ -49,6 +49,8 @@ QVariant DayModel::data ( const QModelIndex & index, int role ) const {
 		
 	//Popredi
     if (role == Qt::ForegroundRole) {			
+		if ((dd->getZiel() & ZE) == ZE) 
+			return QColor(Qt::white);	
 		if (dd->getOdd() == 0) 
 			return QColor(Qt::black);	
 		if (dd->getOdd() == 1) 
@@ -63,7 +65,7 @@ QVariant DayModel::data ( const QModelIndex & index, int role ) const {
 	if (role == Qt::DisplayRole) {			
 		QString zada = 	dd->getZada();
 		if (zada.length() > 4) {
-			zada = dd->getZada().left(4); 
+			zada = dd->getZada().left(4).right(2); 
 		};//if	
 		return QString("%1 %2 - %3").arg(zada).arg(dd->getAufgabe()).arg(zielStr(dd->getZiel()));	
 	};//if
